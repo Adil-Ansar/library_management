@@ -10,7 +10,7 @@ const isAuthenticatedUSer = async (req, res, next) => {
             });
         }
 
-        const decodedData = jwt.verify(token, "#$#@$#tyest!!");
+        const decodedData = jwt.verify(token, process.env.SECRET_KEY);
         if (decodedData) {
             next()
         } else {
@@ -28,6 +28,5 @@ const isAuthenticatedUSer = async (req, res, next) => {
 
 
 module.exports = {
-    jwtToken,
     isAuthenticatedUSer
 };

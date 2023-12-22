@@ -3,8 +3,9 @@ const express = require("express"); // Import Express.js framework
 const bodyParser = require("body-parser"); // Middleware for parsing request bodies
 const dotenv = require("dotenv"); // Load environment variables
 const server = express(); // Create an Express server instance
+const { dbConnect } = require("./helper/dbConnect");
 
-// const { userRoutes, basePath } = require("./route/userRoutes"); // Import userRoutes and basePath
+const { baseRouter, basePath } = require("./helper/routeHandler"); // Import baseRouter and basePath
 
 // Middleware to parse incoming JSON requests
 server.use(bodyParser.json({ limit: "100mb" }));
@@ -20,8 +21,8 @@ server.get("/", (req, res) => {
     res.send("I am a server");
 });
 
-// Using userRoutes for a specific base path
-// server.use(basePath, userRoutes);
+// Using baseRouter for a specific base path
+server.use(basePath, baseRouter);
 
 // Middleware to handle 404 (Route Not Found) errors
 server.use((req, res, next) => {
@@ -37,6 +38,8 @@ server.use((error, req, res, next) => {
 });
 
 // Start the server and listen on the specified port
+
+dbConnect()
 server.listen(process.env.PORT, () => {
     console.log(`Server is working on http://localhost:${process.env.PORT}`); // Logging server start message
-});
+})
